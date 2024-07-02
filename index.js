@@ -31,6 +31,21 @@ const generateNewCard = (taskData) => `
 </div>
 </div>
 `;
+//const globalStore = [];//store all task data in form of object,refresh removes the old list of array
+const globalStore = [];//load local storage data to array
+
+const loadInitialCardData=()=>{
+    //localstoragemto get tasky card data
+    const getCardData = localStorage.getItem("tasky");
+    //convert from string to normal object
+    const {cards}=JSON.parse(getCardData);
+    //loop over those array of task object to create html card,inject it to DOM
+    cards.map((cardObject) =>{ 
+        taskContainer.insertAdjacentHTML("beforeend", generateNewCard(cardObject));
+        //update our globalStore
+        globalStore.push(taskData);})
+    
+};
 
 const saveChanges = () => {
   const taskData = {
@@ -42,4 +57,41 @@ const saveChanges = () => {
   };
 
   taskContainer.insertAdjacentHTML("beforeend", generateNewCard(taskData));
+  globalStore.push(taskData);
+
+  //localStorage.setItem("tasky",globalStore); //id used ,take data directly pushed replace existing data thsts why used globalstorage
+//gives object Object as output in application,should convert to string
+localStorage.setItem("tasky",JSON.stringify({cards:globalStore})); //an object
+
 };
+
+
+
+
+
+
+//Isssues
+//page refresh will causse data to be deleted-> localstorage will solve this issue->5Mb is the limit 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//API:-application programming interface
+//application:-local storage
+//access application via programming-> javascript
+//interface ->middleman to interact with application programmatically->
+//local storage-> with some method(add,delete)-> javascript
+
+
+
+//features 
+//delete the card
